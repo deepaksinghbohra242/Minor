@@ -7,6 +7,7 @@ const userRoutes = require("./route/user/userRoute");
 const { errorHandler , notFound} = require("./middleware/error/errorHandler");
 const postRoute = require("./route/post/postRoute");
 const commentRoutes = require("./route/comments/commentRoute");
+const cors = require("cors")
 const emailRoutes = require("./route/email/emailRoute");
 const categoryRoute = require("./route/category/categoryRoute");
 
@@ -17,7 +18,8 @@ dbConnect();
 
 //middleware
 app.use(express.json());
-
+//cors
+app.use(cors())
 
 //custom middleware
 // const logger =(req , res , next)=>{
