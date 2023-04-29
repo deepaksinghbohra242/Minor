@@ -1,6 +1,7 @@
 import React from "react";
 import { useFormik } from "formik";
 import {useDispatch , useSelector} from 'react-redux'
+import {Navigate} from 'react-router-dom'
 import * as Yup from "yup";
 import { registerUserAction } from "../../../redux/slices/users/userSlices";
 
@@ -37,7 +38,11 @@ const Register = () => {
   const storeData = useSelector(store => store?.users)
   const {loading , appErr ,serverErr,registered } =storeData;
 
-  console.log(appErr ,serverErr)
+  //redirect
+  if(registered){
+    return <Navigate to="/profile" />
+  }
+
   return (
     <section className="relative py-20 2xl:py-40 bg-gray-800 overflow-hidden">
       <div className="relative container px-4 mx-auto">
