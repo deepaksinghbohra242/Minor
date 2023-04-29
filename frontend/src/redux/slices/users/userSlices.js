@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import  baseURL from "../../../utils/baseURL";
 
 //register action
 export const registerUserAction = createAsyncThunk(
@@ -13,7 +14,7 @@ export const registerUserAction = createAsyncThunk(
         },
       };
       const { data } = await axios.post(
-        "http://localhost:5000/api/users/register",
+        `${baseURL}/api/users/register`,
         user,
         config
       );
@@ -26,7 +27,32 @@ export const registerUserAction = createAsyncThunk(
     }
   }
 );
+//login
+export const loginUserAction = createAsyncThunk(
+  'users/login',
+   async (userData, { rejectWithValue, getState, dispatch }) => {
+      const config ={
+        headers: {
+          "Content-Type":"application/json",
+        }
+      }
+      //make http call
+      try {
+        const {data} = await axios.post(
+        `${baseURL}/api/users/login`,
+        userData,config)
 
+        //save url in local storage
+        localStorage.setItem('userInfo',JSON.stringify(userData))
+        return data;
+      } catch (error) {
+        if(!error?.response){
+          throw error;
+        }
+        return rejectWithValue(error?.message?.data)
+      }
+    }
+)
 //slices
 
 const usersSlices = createSlice({
@@ -46,6 +72,23 @@ const usersSlices = createSlice({
       state.serverErr = undefined;
     });
     builder.addCase(registerUserAction.rejected, (state, action) => {
+      state.loading = false;
+      state.appErr = action?.payload?.message;
+      state.serverErr = action?.error?.message;
+    });
+    //login
+    builder.addCase(loginUserAction.pending, (state, action) => {
+      state.loading = true;
+      state.appErr = undefined;
+      state.serverErr = undefined;  
+    });
+    builder.addCase(loginUserAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.userAuth = action?.payload;
+      state.appErr = undefined;
+      state.serverErr = undefined;
+    });
+    builder.addCase(loginUserAction.rejected, (state, action) => {
       state.loading = false;
       state.appErr = action?.payload?.message;
       state.serverErr = action?.error?.message;
