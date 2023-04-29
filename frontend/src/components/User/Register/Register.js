@@ -33,7 +33,11 @@ const Register = () => {
     },
     validationSchema: formSchema,
   });
+  //select state from store
+  const storeData = useSelector(store => store?.users)
+  const {loading , appErr ,serverErr,registered } =storeData;
 
+  console.log(appErr ,serverErr)
   return (
     <section className="relative py-20 2xl:py-40 bg-gray-800 overflow-hidden">
       <div className="relative container px-4 mx-auto">
@@ -54,6 +58,11 @@ const Register = () => {
                 <form onSubmit={formik.handleSubmit}>
                   <h3 className="mb-10 text-2xl text-white font-bold font-heading">
                     Register Account–
+                    {/* display error message */}
+                    {appErr || serverErr ? (<div className ="text-red-500">
+                      {serverErr} {appErr}
+                    </div>
+                    ):null}
                   </h3>
                   {/* First name */}
                   <div className="flex items-center pl-6 mb-3 bg-white rounded-full">
@@ -249,13 +258,20 @@ const Register = () => {
                   </div>
 
                   <div className="inline-flex mb-10"></div>
-
+                  {/* check for loading */}
+                  {loading ? 
+                  <button
+                    disabled
+                    className="py-4 w-full bg-gray-500 text-white font-bold rounded-full transition duration-200"
+                  >
+                    loading please wait 
+                  </button> : 
                   <button
                     type="submit"
                     className="py-4 w-full bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-full transition duration-200"
                   >
                     Register
-                  </button>
+                  </button>}
                 </form>
               </div>
             </div>
