@@ -43,7 +43,7 @@ export const loginUserAction = createAsyncThunk(
         userData,config)
 
         //save url in local storage
-        localStorage.setItem('userInfo',JSON.stringify(userData))
+        localStorage.setItem('userInfo',JSON.stringify(data))
         return data;
       } catch (error) {
         if(!error?.response){
@@ -53,12 +53,17 @@ export const loginUserAction = createAsyncThunk(
       }
     }
 )
+
+//get user  from local storage and place into store
+const userLoginFormStorage = localStorage.getItem('userInfo')
+? JSON.parse(localStorage.getItem('userInfo'))
+: null;
 //slices
 
 const usersSlices = createSlice({
   name: "users",
   initialState: {
-    userAuth: "login",
+    userAuth: userLoginFormStorage,
   },
   extraReducers: builder => {
     //register

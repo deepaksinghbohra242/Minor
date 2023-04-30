@@ -1,7 +1,10 @@
 import React from "react";
 import { useFormik } from "formik";
+import {useDispatch , useSelector} from 'react-redux'
+import {Navigate} from 'react-router-dom'
 import * as Yup from "yup";
 import poster from "../../../img/poster.png";
+import { loginUserAction } from "../../../redux/slices/users/userSlices";
 
 //Form schema
 const formSchema = Yup.object({
@@ -10,6 +13,7 @@ const formSchema = Yup.object({
 });
 
 const Login = () => {
+  const dispatch = useDispatch();
   //formik
   const formik = useFormik({
     initialValues: {
@@ -18,10 +22,17 @@ const Login = () => {
     },
     onSubmit: values => {
       //dispath the action
+      dispatch(loginUserAction(values))
       console.log(values);
     },
     validationSchema: formSchema,
   });
+
+  //redirect 
+  const store = useSelector((state) => state?.users)
+  console.log(store)
+  const {userAuth , loading ,serverErr ,appErr} = store
+  if(userAuth) return <Navigate to='/profile' /> 
   return (
     <>
       <section className="min-h-screen relative py-20 2xl:py-40 bg-gray-900 overflow-hidden">
@@ -43,6 +54,12 @@ const Login = () => {
                       {/* Header */}
                       Login to your Account
                     </h3>
+                    {/* diplay error */}
+                     {serverErr || appErr ?(
+                      <h2 className="text-red-500">
+                      {serverErr} {appErr}
+                      </h2>
+                     ):null}
                     <div className="flex items-center pl-6 mb-3 border border-gray-50 bg-white rounded-full">
                       <span className="inline-block pr-3 border-r border-gray-50">
                         <svg
@@ -112,12 +129,17 @@ const Login = () => {
                       {formik.touched.password && formik.errors.password}
                     </div>
                     {/* Login btn */}
-                    <button
+                    {loading ? <button
+                      disabled
+                      className="py-4 w-full bg-gray-500  text-white font-bold rounded-full transition duration-200"
+                    >
+                      Loading please wait ...
+                    </button> :<button
                       type="submit"
                       className="py-4 w-full bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-full transition duration-200"
                     >
                       Login
-                    </button>
+                    </button>}
                   </form>
                 </div>
               </div>
