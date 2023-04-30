@@ -1,7 +1,6 @@
 /* This example requires Tailwind CSS v2.0+ */
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-
 import { Link } from "react-router-dom";
 import {
   BellIcon,
@@ -11,6 +10,8 @@ import {
   LogoutIcon,
 } from "@heroicons/react/outline";
 import { PlusIcon } from "@heroicons/react/solid";
+import { useDispatch } from "react-redux";
+import { logoutAction } from "../../../redux/slices/users/userSlices";
 
 const navigation = [
   { name: "Home", href: "/", current: true },
@@ -31,7 +32,8 @@ const AdminNavbar = () => {
     { name: "Your Profile", href: `/profile` },
     { name: "Change your password", href: "/update-password" },
   ];
-
+  //logout
+  const dispatch = useDispatch();
   return (
     <Disclosure as="nav" className="bg-green-800">
       {({ open }) => (
@@ -88,6 +90,7 @@ const AdminNavbar = () => {
                   </Link>
                   {/* Logout */}
                   <button
+                    onClick={()=>(dispatch(logoutAction()))}
                     type="button"
                     className="relative inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-500 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-indigo-500"
                   >
