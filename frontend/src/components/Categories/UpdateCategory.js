@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { PlusCircleIcon, BookOpenIcon } from "@heroicons/react/solid";
 import { useFormik } from "formik";
+import {Navigate, useParams} from "react-router-dom"
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -14,11 +15,13 @@ const formSchema = Yup.object({
   title: Yup.string().required("Title is required"),
 });
 
-const UpdateCategory = ({
-  match: {
-    params: { id },
-  },
-}) => {
+// const UpdateCategory = ({
+//   match : {}
+// }) => {
+  
+const UpdateCategory = (props) => {
+  // console.log(props);
+  const {id} = useParams();
   const dispatch = useDispatch();
   //fetch single category
   useEffect(() => {
@@ -28,7 +31,7 @@ const UpdateCategory = ({
   //get data from store
   const state = useSelector(state => state?.category);
 
-  const { loading, appErr, serverErr, category } = state;
+  const { loading, appErr, serverErr, category ,isEdited ,isDeleted} = state;
 
   //formik
   const formik = useFormik({
@@ -45,6 +48,7 @@ const UpdateCategory = ({
     validationSchema: formSchema,
   });
 
+  if(isEdited || isDeleted) return <Navigate to="/category-list" />
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
