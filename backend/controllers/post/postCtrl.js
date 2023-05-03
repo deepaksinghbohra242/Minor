@@ -27,18 +27,18 @@ const createPostCtrl = expressAsyncHandler(async (req, res) => {
   }
 
   //1. Get the oath to img
-  // const localPath = `public/Images/post/${req.file.filename}`;
+  const localPath = `public/Images/post/${req.file.filename}`;
   //2.Upload to cloudinary
-  // const imgUploaded = await cloudinaryUploadImg(localPath);
+  const imgUploaded = await cloudinaryUploadImg(localPath);
   try {
     const post = await Post.create({
       ...req.body,
-      // image: imgUploaded?.url,
+      image: imgUploaded?.url,
       user: _id,
     });
     res.json(post);
     //Remove uploaded img
-    // fs.unlinkSync(localPath);
+    fs.unlinkSync(localPath);
   } catch (error) {
     res.json(error);
   }
@@ -48,10 +48,19 @@ const createPostCtrl = expressAsyncHandler(async (req, res) => {
 //Fetch al posts
 //-------------------------------
 const fetchPostsCtrl = expressAsyncHandler(async (req, res) => {
+  const hasCategory = req.query.category
+  console.log(hasCategory)
   try {
+    if(hasCategory){
+    const posts = await Post.find({category : hasCategory}).populate('user')
+    res.json(posts);
+    }else{
     const posts = await Post.find({}).populate('user');
     res.json(posts);
-  } catch (error) {}
+    }
+  } catch (error) {
+    res.json(error);
+  }
 });
 
 //---------------

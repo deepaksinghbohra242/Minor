@@ -6,8 +6,10 @@ import Navbar from "./components/Navigation/Navbar";
 import AddNewCategory from "./components/Categories/AddNewCategory";
 import CategoryList from "./components/Categories/CategoryList";
 import UpdateCategory from "./components/Categories/UpdateCategory";
-import AdminRoute from "./components/Navigation/ProtectedRoutes/AdminRoute";
+// import AdminRoute from "./components/Navigation/ProtectedRoutes/AdminRoute";
 import CreatePost from "./components/Posts/CreatePost";
+import PostsList from "./components/Posts/PostsList";
+// import PrivateProtectRoute from "./components/Navigation/ProtectedRoutes/PrivateProtectRoute";
 
 
 function App() {
@@ -15,17 +17,17 @@ function App() {
     <BrowserRouter>
       <Navbar />
       <Routes>
-        <Route element={<AdminRoute />} >
-          {/* <Route exact path="/update-category/:id" element={<UpdateCategory />} />
+        {/* <Route element={<AdminRoute />} >
           <Route exact path="/add-category" element={<AddNewCategory />} />
-          <Route exact path="/category-list" element={<CategoryList />} /> */}
-        </Route>
-        <Route exact path="/update-category/:id" element={<UpdateCategory />} />
+        </Route> */}
+        {/* <Route exact path="/add-category" element={(
+        <AdminRoute ><AddNewCategory /></AdminRoute>)}/> */}
+
+        <Route exact path="/update-category/:id" element={<UpdateCategory />} /> 
+        <Route exact path="/posts" element={<PostsList />} />
         <Route exact path="/add-category" element={<AddNewCategory />} />
         <Route exact path="/category-list" element={<CategoryList />} />
         <Route exact path="/create-post" element={<CreatePost />} />
-
-
         <Route exact path="/" element={<HomePage />} />
         <Route exact path="/register" element={<Register />} />
         <Route exact path="/login" element={<Login />} />
