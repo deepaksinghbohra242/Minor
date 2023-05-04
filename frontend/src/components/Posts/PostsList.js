@@ -14,8 +14,8 @@ import LoadingComponent from "../../utils/LoadingComponent";
 export default function PostsList() {
   //select post from store
   const post = useSelector(state => state?.post);
-  const { postLists, appErr, serverErr, likes, dislikes } = post;
-  // console.log(post);
+  const { postLists, loading, appErr, serverErr, likes, dislikes } = post;
+  console.log(postLists);
   //select categories from store
   const category = useSelector(state => state?.category);
   const {
@@ -28,7 +28,7 @@ export default function PostsList() {
   const dispatch = useDispatch();
   //fetch post
   useEffect(() => {
-    dispatch(fetchPostsAction());
+    dispatch(fetchPostsAction(""));
   }, [dispatch, likes, dislikes]);
   //fetch categories
   useEffect(() => {
@@ -73,12 +73,13 @@ export default function PostsList() {
                         {catServerErr} {catAppErr}
                       </h1>
                     ) : categoryList?.length <= 0 ? (
-                      <h1 className="text-yellow-500 text-lg text-center">No Category Found</h1>
+                      <h1 className="text-yellow-400 text-lg text-center">
+                        No Category Found
+                      </h1>
                     ) : (
                       categoryList?.map(category => (
-                        <li key={category?.title}>
+                        <li>
                           <p
-                            
                             onClick={() =>
                               dispatch(fetchPostsAction(category?.title))
                             }
@@ -92,15 +93,17 @@ export default function PostsList() {
                   </ul>
                 </div>
               </div>
-              <div className="w-full lg:w-3/4 px-3">
+              <div class="w-full lg:w-3/4 px-3">
                 {/* Post goes here */}
 
                 {appErr || serverErr ? (
                   <h1>
                     {serverErr} {appErr}
                   </h1>
-                ) : postLists?.lenght <= 0 ? (
-                  <h1 className="text-yellow-500 text-lg text-center">No Post Found</h1>
+                ) : postLists?.length <= 0 ? (
+                  <h1 className="text-yellow-400 text-lg text-center">
+                    No Post Found
+                  </h1>
                 ) : (
                   postLists?.map(post => (
                     <div
@@ -198,7 +201,7 @@ export default function PostsList() {
                             </div>
                           </div>
                         </div>
-                        {/* <p className="text-gray-500">
+                        {/* <p class="text-gray-500">
                              Quisque id sagittis turpis. Nulla sollicitudin rutrum
                              eros eu dictum...
                            </p> */}
@@ -211,18 +214,18 @@ export default function PostsList() {
           </div>
         </div>
         <div className="bg-gray-900">
-          <div className="skew bg-green-500 skew-bottom mr-for-radius">
+          <div class="skew bg-green-500 skew-bottom mr-for-radius">
             <svg
-              className="h-8 md:h-12 lg:h-10 w-full text-gray-900"
+              class="h-8 md:h-12 lg:h-10 w-full text-gray-900"
               viewBox="0 0 10 10"
               preserveAspectRatio="none"
             >
               <polygon fill="currentColor" points="0 0 10 0 0 10"></polygon>
             </svg>
           </div>
-          <div className="skew bg-gray-500  skew-bottom ml-for-radius">
+          <div class="skew bg-gray-500  skew-bottom ml-for-radius">
             <svg
-              className="h-8 bg-gray-500 md:h-12 lg:h-20 w-full text-gray-900"
+              class="h-8 bg-gray-500 md:h-12 lg:h-20 w-full text-gray-900"
               viewBox="0 0 10 10"
               preserveAspectRatio="none"
             >
