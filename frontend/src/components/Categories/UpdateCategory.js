@@ -19,7 +19,7 @@ const formSchema = Yup.object({
 //   match : {}
 // }) => {
   
-const UpdateCategory = (props) => {
+const UpdateCategory = () => {
   // console.log(props);
   const {id} = useParams();
   const dispatch = useDispatch();
