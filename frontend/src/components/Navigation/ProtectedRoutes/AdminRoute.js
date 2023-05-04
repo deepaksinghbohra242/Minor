@@ -4,7 +4,7 @@ import { Navigate ,Outlet } from 'react-router-dom'
 
 
 
-const AdminRoute = ({children}) => {
+const AdminRoute = () => {
     //check if user login or not
     const user =  useSelector(state => state?.user)
     const userAuth = user

@@ -49,7 +49,6 @@ const createPostCtrl = expressAsyncHandler(async (req, res) => {
 //-------------------------------
 const fetchPostsCtrl = expressAsyncHandler(async (req, res) => {
   const hasCategory = req.query.category
-  console.log(hasCategory)
   try {
     if(hasCategory){
     const posts = await Post.find({category : hasCategory}).populate('user')
