@@ -34,7 +34,7 @@ app.use('/api/users',userRoutes)
 //post route 
 app.use('/api/posts',postRoute)
 //comment route
-app.use('/api/comment',commentRoutes)
+app.use('/api/comments',commentRoutes)
 //email route
 app.use('/api/email',emailRoutes)
 //category route

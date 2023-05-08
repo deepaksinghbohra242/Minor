@@ -14,8 +14,8 @@ import LoadingComponent from "../../utils/LoadingComponent";
 export default function PostsList() {
   //select post from store
   const post = useSelector(state => state?.post);
-  const { postLists, appErr, serverErr, likes, dislikes } = post;
-  // console.log(post);
+  const { postLists, loading, appErr, serverErr, likes, dislikes } = post;
+  // console.log(postLists);
   //select categories from store
   const category = useSelector(state => state?.category);
   const {
@@ -28,7 +28,7 @@ export default function PostsList() {
   const dispatch = useDispatch();
   //fetch post
   useEffect(() => {
-    dispatch(fetchPostsAction());
+    dispatch(fetchPostsAction(""));
   }, [dispatch, likes, dislikes]);
   //fetch categories
   useEffect(() => {
@@ -73,12 +73,13 @@ export default function PostsList() {
                         {catServerErr} {catAppErr}
                       </h1>
                     ) : categoryList?.length <= 0 ? (
-                      <h1 className="text-yellow-500 text-lg text-center">No Category Found</h1>
+                      <h1 className="text-yellow-400 text-lg text-center">
+                        No Category Found
+                      </h1>
                     ) : (
                       categoryList?.map(category => (
                         <li key={category?.title}>
                           <p
-                            
                             onClick={() =>
                               dispatch(fetchPostsAction(category?.title))
                             }
@@ -99,8 +100,10 @@ export default function PostsList() {
                   <h1>
                     {serverErr} {appErr}
                   </h1>
-                ) : postLists?.lenght <= 0 ? (
-                  <h1 className="text-yellow-500 text-lg text-center">No Post Found</h1>
+                ) : postLists?.length <= 0 ? (
+                  <h1 className="text-yellow-400 text-lg text-center">
+                    No Post Found
+                  </h1>
                 ) : (
                   postLists?.map(post => (
                     <div
