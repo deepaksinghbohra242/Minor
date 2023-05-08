@@ -5,12 +5,14 @@ import { deletePostAction, fetchPostDetailsAction } from "../../redux/slices/pos
 import { useDispatch, useSelector } from "react-redux";
 import DateFormatter from "../../utils/DateFormatter";
 import LoadingComponent from "../../utils/LoadingComponent";
-
+import AddComment from "../Comments/AddComment";
+import CommentsList from "../Comments/CommentsList";
 
 
 
 const PostDetails = () => {
   const {id} = useParams();
+  // console.log(id);
   const dispatch = useDispatch();
   useEffect(()=>{
     dispatch(fetchPostDetailsAction(id))
@@ -21,8 +23,12 @@ const PostDetails = () => {
 
   const {postDetails , loading ,appErr,serverErr ,isDeleted} = post;
 
-//redirect
+//get login user
+const user = useSelector(state=>state.users)
 
+const isCreatedBy = postDetails?.user?._id === user?.userAuth?.id; 
+// console.log(isCreatedBy)
+//redirect
 if(isDeleted) return <Navigate to='/posts' /> 
 
   return (
@@ -68,23 +74,23 @@ if(isDeleted) return <Navigate to='/posts' />
                {postDetails?.description} 
 
               {/* Show delete and update btn if created user */}
-              <div className="flex">
+             {isCreatedBy ?  <div className="flex">
                 <Link to={`/update-post/${postDetails?._id}`} className="p-3">
                   <PencilAltIcon className="h-8 mt-3 text-yellow-300" />
                 </Link>
                 <button onClick={()=>dispatch(deletePostAction(postDetails?._id))} className="ml-3">
                   <TrashIcon className="h-8 mt-3 text-red-600" />
                 </button>
-              </div>
+              </div>: null}
             </div>
           </div>
         </div>
       </div>
       {/* Add comment Form component here */}
-
+        <AddComment postId={id} />
       <div className="flex justify-center  items-center">
-        {/* <CommentsList comments={post?.comments} postId={post?._id} /> */}
-        CommentsList
+        <CommentsList comments={post?.comments} postId={post?._id} />
+        {/* <CommentsList  /> */}
       </div>
     </section>}
     </>
