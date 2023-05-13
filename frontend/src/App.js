@@ -11,6 +11,11 @@ import CreatePost from "./components/Posts/CreatePost";
 import PostsList from "./components/Posts/PostsList";
 import PostDetails from "./components/Posts/PostDetails";
 import UpdatePost from "./components/Posts/UpdatePost";
+import Profile from "./components/User/Profile/Profile";
+import UploadProfilePhoto from "./components/User/Profile/UploadProfilePhoto";
+import UpdateProfileForm from "./components/User/Profile/UpdateProfileForm";
+import SendEmail from "./components/User/Emailing/SendEmail";
+import UsersList from "./components/User/UsersList/UsersList";
 // import PrivateProtectRoute from "./components/Navigation/ProtectedRoutes/PrivateProtectRoute";
 
 function App() {
@@ -31,9 +36,14 @@ function App() {
         <Route exact path="/add-category" element={<AddNewCategory />} />
         <Route exact path="/category-list" element={<CategoryList />} />
         <Route exact path="/create-post" element={<CreatePost />} />
+        <Route exact path="/profile/:id" element={<Profile />} />
         <Route exact path="/" element={<HomePage />} />
+        <Route exact path="/upload-profile-photo" element={<UploadProfilePhoto />} />
+        <Route exact path="/update-profile/:id" element={<UpdateProfileForm />} />
+        <Route exact path="/send-email" element={<SendEmail />} />
         <Route exact path="/register" element={<Register />} />
         <Route exact path="/login" element={<Login />} />
+        <Route exact path="/users" element={<UsersList />} />
 
       </Routes>
     </BrowserRouter>

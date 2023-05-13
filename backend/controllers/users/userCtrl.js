@@ -6,7 +6,7 @@ const User = require("../../model/user/User")
 const expressAsyncHandler = require("express-async-handler");
 const validateMongodbID = require("../../utils/validateMongodbID");
 const cloudinaryUploadImg = require("../../utils/cloudinary");
-
+const blockUser = require("../../utils/blockUser");
 sgMail.setApiKey(process.env.SEND_GRID_API_KEY)
 
 //Registered
@@ -43,7 +43,8 @@ const userLoginCtrl = expressAsyncHandler(async (req, res) => {
       email: userFound?.email,
       profilePhoto: userFound?.profilePhoto,
       isAdmin: userFound?.admin,
-      token: generateToken(userFound?._id)
+      token: generateToken(userFound?._id),
+      isVerified:userFound?.isAccountVerified
     });
   }
   else {
@@ -102,6 +103,7 @@ const fetchUserDetailsCtrl = expressAsyncHandler(async (req, res) => {
 })
 
 
+
 //-----------------
 //User profile
 //-----------------
@@ -109,9 +111,27 @@ const fetchUserDetailsCtrl = expressAsyncHandler(async (req, res) => {
 const userProfileCtrl = expressAsyncHandler(async (req, res) => {
   const { id } = req.params;
   validateMongodbID(id);
+  //1. find the login user
+  //2. check if thos particular user exists or not
+
+  // get the loggin user
+  const loginUserId = req?.user?._id.toString()
+  console.log(loginUserId)
   try {
-    const myProfile = await User.findById(id).populate("post");
-    res.json(myProfile)
+    const myProfile = await User.findById(id).populate('posts').populate('viewedBy');
+    const alreadyViewed = myProfile?.viewedBy?.find(user => {
+      return user?._id?.toString() === loginUserId
+    })
+    // console.log(alreadyViewed)
+    if(alreadyViewed){
+      res.json(myProfile)
+    }
+    else{
+      const profile = await User.findByIdAndUpdate(myProfile?._id , {
+        $push : {viewedBy : loginUserId}
+      })
+      res.json('not viewed') 
+    }
   } catch (error) {
     res.json(error);
   }
@@ -122,6 +142,7 @@ const userProfileCtrl = expressAsyncHandler(async (req, res) => {
 //-----------------
 const updateUserCtrl = expressAsyncHandler(async (req, res) => {
   const { _id } = req?.user;
+  blockUser(req?.user)
   validateMongodbID(_id)
 
   const user = await User.findByIdAndUpdate(_id, {
@@ -256,24 +277,22 @@ const generateVerificationTokenCtrl = expressAsyncHandler(async (req, res) => {
   const loginUserId = req.user.id;
 
   const user = await User.findById(loginUserId)
-  console.log(user)
+  console.log(user?.email)
   try {
     // Generate token
-    const verificationToken = await user.createAccountVerificationToken();
+    const verificationToken = await user?.createAccountVerificationToken();
     //save the user
     await user.save()
-    console.log(verificationToken)
+    // console.log(verificationToken)
     //build a message
 
-    const resetURL = `If you were requested to verify your account ,verify now within 10minutes 
-                      otherwise ignore this message <a href="http://localhost:3000/verify-account/${verificationToken}">Click to verify </a>`
+    const resetURL = `If you were requested to verify your account ,verify now within 10minutes otherwise ignore this message <a href="http://localhost:3000/verify-account/${verificationToken}">Click to verify </a>`
     const msg = {
-      to: 'fndsna@gmail.com',
+      to: user?.email,
       from: 'deepaksinghbohradb@gmail.com',
       subject: 'my first node js email sending ',
       html: resetURL,
     }
-
     await sgMail.send(msg);
     res.json(resetURL)
   } catch (error) {
@@ -373,6 +392,8 @@ const passwordResetCtrl = expressAsyncHandler (async (req,res) => {
 
 const profilePhotoUploadCtrl = expressAsyncHandler(async (req,res) =>{
   const {_id} = req.user
+  //block user
+  blockUser(req?.user)
   //get the oath to img
   const localPath = `public/Images/Profile/${req.file.filename}`;
   // Upload image to cloudinary
