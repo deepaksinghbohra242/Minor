@@ -57,11 +57,12 @@ if(isDeleted) return <Navigate to='/posts' />
               alt=""
             />
             <div className="text-left">
+              <Link  to={`/profile/${postDetails?.user?._id}`}>
               <h4 className="mb-1 text-2xl font-bold text-gray-50">
                 <span className="text-xl lg:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-yellow-200 to-orange-600">
                   {postDetails?.user?.fullName} {" "}{postDetails?.user?.lastName}
                 </span>
-              </h4>
+              </h4></Link>
               <p className="text-gray-500">
                 <DateFormatter date={postDetails?.createdAt} /> 
                 created At
@@ -87,7 +88,7 @@ if(isDeleted) return <Navigate to='/posts' />
         </div>
       </div>
       {/* Add comment Form component here */}
-        <AddComment postId={id} />
+      {user?.userAuth ? <AddComment postId={id} /> : null}
       <div className="flex justify-center  items-center">
         <CommentsList comments={post?.comments} postId={post?._id} />
         {/* <CommentsList  /> */}
