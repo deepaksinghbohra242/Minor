@@ -296,7 +296,7 @@ export const uploadProfilePhotoAction = createAsyncThunk(
       //http call
       const formData = new FormData();
 
-      formData.append("image", userImg?.image);
+      formData.append("Image", userImg?.image);
 
       const { data } = await axios.put(
         `${baseUrl}/api/users/profilephoto-upload`,
@@ -453,7 +453,7 @@ const usersSlices = createSlice({
     });
     builder.addCase(unfollowUserAction.rejected, (state, action) => {
       state.unfollowLoading = false;
-      state.followed = undefined;
+      // state.followed = undefined;
       state.unFollowedAppErr = action?.payload?.message;
       state.unfollowServerErr = action?.error?.message;
     });
