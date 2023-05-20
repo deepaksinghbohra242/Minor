@@ -52,11 +52,6 @@ const UsersListItem = user => {
             </p>
           </div>
           <div className="w-full flex lg:w-4/12 px-4  mb-6 lg:mb-0">
-            <p className="inline-block py-1 px-2 mr-2 mb-1 lg:mb-0 text-xs border-2 rounded">
-              <span className="text-base mr-2  boder-2 text-bold text-yellow-500">
-                {user.user?.posts?.length} - Posts
-              </span>
-            </p>
             <Link
               to={`/profile/${user?.user?._id}`}
               className=" text-gray-600 inline-block py-1 px-2 text-center mr-2 mb-1 lg:mb-0 text-xs border-2 border-yellow-500 rounded hover:bg-green-600 hover:text-white"

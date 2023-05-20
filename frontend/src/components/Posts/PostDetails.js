@@ -5,8 +5,6 @@ import { deletePostAction, fetchPostDetailsAction } from "../../redux/slices/pos
 import { useDispatch, useSelector } from "react-redux";
 import DateFormatter from "../../utils/DateFormatter";
 import LoadingComponent from "../../utils/LoadingComponent";
-import AddComment from "../Comments/AddComment";
-import CommentsList from "../Comments/CommentsList";
 
 
 
@@ -86,12 +84,6 @@ if(isDeleted) return <Navigate to='/posts' />
             </div>
           </div>
         </div>
-      </div>
-      {/* Add comment Form component here */}
-      {user?.userAuth ? <AddComment postId={id} /> : null}
-      <div className="flex justify-center  items-center">
-        <CommentsList comments={post?.comments} postId={post?._id} />
-        {/* <CommentsList  /> */}
       </div>
     </section>}
     </>

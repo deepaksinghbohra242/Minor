@@ -32,7 +32,6 @@ const AdminNavbar = ({isLogin}) => {
   //Navigation
   const userNavigation = [
     { name: "Your Profile", href: `/profile/${isLogin?.id}` },
-    { name: "Change your password", href: "/update-password" },
   ];
   //logout
   const dispatch = useDispatch();

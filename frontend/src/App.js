@@ -6,7 +6,6 @@ import Navbar from "./components/Navigation/Navbar";
 import AddNewCategory from "./components/Categories/AddNewCategory";
 import CategoryList from "./components/Categories/CategoryList";
 import UpdateCategory from "./components/Categories/UpdateCategory";
-import AdminRoute from "./components/Navigation/ProtectedRoutes/AdminRoute";
 import CreatePost from "./components/Posts/CreatePost";
 import PostsList from "./components/Posts/PostsList";
 import PostDetails from "./components/Posts/PostDetails";
@@ -16,19 +15,12 @@ import UploadProfilePhoto from "./components/User/Profile/UploadProfilePhoto";
 import UpdateProfileForm from "./components/User/Profile/UpdateProfileForm";
 import SendEmail from "./components/User/Emailing/SendEmail";
 import UsersList from "./components/User/UsersList/UsersList";
-// import PrivateProtectRoute from "./components/Navigation/ProtectedRoutes/PrivateProtectRoute";
 
 function App() {
   return (
     <BrowserRouter>
       <Navbar />
       <Routes>
-        {/* <Route path ="" element={<AdminRoute />} >
-          <Route exact path="/add-category" element={<AddNewCategory />} />
-        </Route> */}
-        {/* <Route exact path="/add-category" element={(
-        <AdminRoute ><AddNewCategory /></AdminRoute>)}/> */}
-
         <Route exact path="/update-post/:id" element={<UpdatePost />} />
         <Route exact path="/update-category/:id" element={<UpdateCategory />} />
         <Route exact path="/posts" element={<PostsList />} />

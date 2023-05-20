@@ -198,19 +198,19 @@ const followingUserCtrl = expressAsyncHandler(async (req, res) => {
   const alReadyFollowing = targetUser?.followers?.find(user => user?.toString() == loginUserId.toString());
 
   if (alReadyFollowing) throw new Error('You have already followed this user')
-  console.log(alReadyFollowing)
+  // console.log(alReadyFollowing)
   //1. find the user you want to follow and update its follower field
   await User.findByIdAndUpdate(followId, {
     $push: { followers: loginUserId },
-  })
+    isFollowing: true,
+  },{new : true})
   //2. Update  the login user folowing field
-  await User.findByIdAndUpdate(loginUserId, {
-    $push: {
-      following: followId
+  await User.findByIdAndUpdate(loginUserId, 
+    {
+      $push: { followers: followId },
     },
-  }, {
-    new: true,
-  })
+    { new: true }
+  )
   res.json('You have successfully followed this user')
 });
 
@@ -224,7 +224,8 @@ const unfollowUserCtrl = expressAsyncHandler(async (req, res) => {
   const loginUserId = req.user.id;
 
   await User.findByIdAndUpdate(unFollowId, {
-    $pull: { followers: loginUserId }
+    $pull: { followers: loginUserId },
+    isFollowing: false,
   }, { new: true });
 
   await User.findByIdAndUpdate(loginUserId, {
