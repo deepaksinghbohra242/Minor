@@ -15,6 +15,7 @@ import UploadProfilePhoto from "./components/User/Profile/UploadProfilePhoto";
 import UpdateProfileForm from "./components/User/Profile/UpdateProfileForm";
 import SendEmail from "./components/User/Emailing/SendEmail";
 import UsersList from "./components/User/UsersList/UsersList";
+import AccountVerified from "./components/User/AccountVerification/AccountVerified"
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route exact path="/update-post/:id" element={<UpdatePost />} />
         <Route exact path="/update-category/:id" element={<UpdateCategory />} />
         <Route exact path="/posts" element={<PostsList />} />
+        <Route exact path="/verify-account/:token" element={<AccountVerified />} />
         <Route exact path="/posts/:id" element={<PostDetails />} />
         <Route exact path="/add-category" element={<AddNewCategory />} />
         <Route exact path="/category-list" element={<CategoryList />} />
