@@ -116,7 +116,7 @@ const userProfileCtrl = expressAsyncHandler(async (req, res) => {
 
   // get the loggin user
   const loginUserId = req?.user?._id.toString()
-  console.log(loginUserId)
+  // console.log(loginUserId)
   try {
     const myProfile = await User.findById(id).populate('posts').populate('viewedBy');
     const alreadyViewed = myProfile?.viewedBy?.find(user => {
@@ -207,7 +207,7 @@ const followingUserCtrl = expressAsyncHandler(async (req, res) => {
   //2. Update  the login user folowing field
   await User.findByIdAndUpdate(loginUserId, 
     {
-      $push: { followers: followId },
+      $push: { following: followId },
     },
     { new: true }
   )
@@ -278,13 +278,13 @@ const generateVerificationTokenCtrl = expressAsyncHandler(async (req, res) => {
   const loginUserId = req.user.id;
 
   const user = await User.findById(loginUserId)
-  console.log(user?.email)
+  // console.log(user?.email)
   try {
     // Generate token
     const verificationToken = await user?.createAccountVerificationToken();
     //save the user
     await user.save()
-    // console.log(verificationToken)
+    console.log(verificationToken)
     //build a message
 
     const resetURL = `If you were requested to verify your account ,verify now within 10minutes otherwise ignore this message <a href="http://localhost:3000/verify-account/${verificationToken}">Click to verify </a>`
