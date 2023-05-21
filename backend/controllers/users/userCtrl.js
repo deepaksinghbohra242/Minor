@@ -162,23 +162,23 @@ const updateUserCtrl = expressAsyncHandler(async (req, res) => {
 //Update password
 //-----------------
 
-const updateUserPasswordCtrl = expressAsyncHandler(async (req, res) => {
-  //destructure the login user
-  const { _id } = req.user;
-  const { password } = req.body;
-  validateMongodbID(_id);
-  //Find the user by _id
-  const user = await User.findById(_id);
+// const updateUserPasswordCtrl = expressAsyncHandler(async (req, res) => {
+//   //destructure the login user
+//   const { _id } = req.user;
+//   const { password } = req.body;
+//   validateMongodbID(_id);
+//   //Find the user by _id
+//   const user = await User.findById(_id);
 
-  if (password) {
-    user.password = password;
-    const updatedUser = await user.save();
-    res.json(updatedUser);
-  }
-  else {
-    res.json(user);
-  }
-});
+//   if (password) {
+//     user.password = password;
+//     const updatedUser = await user.save();
+//     res.json(updatedUser);
+//   }
+//   else {
+//     res.json(user);
+//   }
+// });
 
 
 
@@ -329,63 +329,63 @@ const accountVerificationCtrl = expressAsyncHandler(async (req, res) => {
 //forget password generator 
 //-------------------------
 
-const forgetPasswordToken = expressAsyncHandler(async (req, res) => {
-  //find user by email
-  const { email } = req.body;
+// const forgetPasswordToken = expressAsyncHandler(async (req, res) => {
+//   //find user by email
+//   const { email } = req.body;
 
-  const user = await User.findOne({ email })
-  if (!user) throw new Error("User not Found")
+//   const user = await User.findOne({ email })
+//   if (!user) throw new Error("User not Found")
 
-  // res.send('forget password')
+//   // res.send('forget password')
 
-  try {
-    const token = await user.createPasswordResetToken();
-    console.log(token)
-    await user.save();
+//   try {
+//     const token = await user.createPasswordResetToken();
+//     console.log(token)
+//     await user.save();
 
-    //build your msg
-    const resetURL = `If you were requested to reset your account ,reset now within 10minutes 
-    otherwise ignore this message <a href="http://localhost:3000/reset-password/${token}">Click to verify</a>`
-    const msg = {
-      to: email,
-      from: 'deepaksinghbohradb@gmail.com',
-      subject: 'Reset Password',
-      html: resetURL,
-    }
+//     //build your msg
+//     const resetURL = `If you were requested to reset your account ,reset now within 10minutes 
+//     otherwise ignore this message <a href="http://localhost:3000/reset-password/${token}">Click to verify</a>`
+//     const msg = {
+//       to: email,
+//       from: 'deepaksinghbohradb@gmail.com',
+//       subject: 'Reset Password',
+//       html: resetURL,
+//     }
 
-    const emailMsg = await sgMail.send(msg)
-    res.send({
-      msg : `A verification message is successfully sent to ${user?.email} . Reset now within 10 minutes ${resetURL}`
-    })
+//     const emailMsg = await sgMail.send(msg)
+//     res.send({
+//       msg : `A verification message is successfully sent to ${user?.email} . Reset now within 10 minutes ${resetURL}`
+//     })
 
-  } catch (error) {
-    res.json(error)
-  }
-})
+//   } catch (error) {
+//     res.json(error)
+//   }
+// })
 
 
 //-----------------
 //password reset
 //-----------------
 
-const passwordResetCtrl = expressAsyncHandler (async (req,res) => {
-  const {token , password} = req.body;
+// const passwordResetCtrl = expressAsyncHandler (async (req,res) => {
+//   const {token , password} = req.body;
 
-  const hashedToken = crypto.createHash('sha256').update(token).digest('hex')
+//   const hashedToken = crypto.createHash('sha256').update(token).digest('hex')
 
-  //find this user value token
+//   //find this user value token
 
-  const user =  await User.findOne({passwordResetToken : hashedToken , passwordResetExpires : {$gt : Date.now()}});
+//   const user =  await User.findOne({passwordResetToken : hashedToken , passwordResetExpires : {$gt : Date.now()}});
 
-  if(!user) throw new Error ("token expire , try again later")
+//   if(!user) throw new Error ("token expire , try again later")
   
-  //update and change password 
-  user.password = password;
-  user.passwordResetToken = undefined;
-  user.passwordResetExpires = undefined;
-  await user.save();
-  res.json(user);
-})
+//   //update and change password 
+//   user.password = password;
+//   user.passwordResetToken = undefined;
+//   user.passwordResetExpires = undefined;
+//   await user.save();
+//   res.json(user);
+// })
 
 //-----------------
 //Profile photo upload
@@ -419,13 +419,13 @@ module.exports = {
   userProfileCtrl,
   updateUserCtrl,
   profilePhotoUploadCtrl,
-  updateUserPasswordCtrl,
+  // updateUserPasswordCtrl,
   followingUserCtrl,
   unfollowUserCtrl,
   blockUserCtrl,
   unBlockUserCtrl,
-  passwordResetCtrl,
-  forgetPasswordToken,
+  // passwordResetCtrl,
+  // forgetPasswordToken,
   generateVerificationTokenCtrl,
   accountVerificationCtrl
 };

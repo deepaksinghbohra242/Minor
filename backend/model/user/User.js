@@ -135,16 +135,16 @@ userSchema.methods.createAccountVerificationToken = async function (){
 
 //pasword reset /forget
 
-userSchema.methods.createPasswordResetToken = async function (){
-    //create a token
-    const resetToken = crypto.randomBytes(32).toString("hex");
-    // console.log(resetToken);
-    this.passwordResetToken = crypto.createHash('sha256').update(resetToken).digest("hex")
+// userSchema.methods.createPasswordResetToken = async function (){
+//     //create a token
+//     const resetToken = crypto.randomBytes(32).toString("hex");
+//     // console.log(resetToken);
+//     this.passwordResetToken = crypto.createHash('sha256').update(resetToken).digest("hex")
 
-    this.passwordResetExpires = Date.now() + 30 * 60 * 1000; // 10minitues 
+//     this.passwordResetExpires = Date.now() + 30 * 60 * 1000; // 10minitues 
 
-    return resetToken;
-}
+//     return resetToken;
+// }
 
 
 // compile schema into model
