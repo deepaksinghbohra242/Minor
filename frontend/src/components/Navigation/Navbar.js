@@ -13,7 +13,7 @@ const Navbar = () => {
   const {userAuth ,profile} = state;
   // console.log(profile);
   const isAdmin = userAuth?.isAdmin;
-  // const isAccountVerified  = state?.profile?.isAccountVerified  ;
+  const isAccountVerified  = state?.profile?.isAccountVerified  ;
 
   //account verification
   const account  = useSelector(state => state?.accountVerification);
