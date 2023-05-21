@@ -453,7 +453,7 @@ const usersSlices = createSlice({
     });
     builder.addCase(unfollowUserAction.rejected, (state, action) => {
       state.unfollowLoading = false;
-      // state.followed = undefined;
+      state.followed = undefined;
       state.unFollowedAppErr = action?.payload?.message;
       state.unfollowServerErr = action?.error?.message;
     });
